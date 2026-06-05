@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="24dp">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
+        android:src="@android:drawable/ic_menu_myplaces" />
+
+    <TextView
+        style="@style/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_gravity="start"
+        android:text="DATOS PERSONALES"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="start"
+        android:text="Nombre: Giovanni"
+        android:textSize="20dp"
+        android:textColor="@color/black"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_gravity="start"
+        android:text="Apellidos: Mendoza Espinoza"
+        android:textSize="20dp"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        style="@style/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_gravity="start"
+        android:text="DATOS DE CONTACTO"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="Correo: giovanni@email.com"
+        android:textSize="20dp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="190dp"
+        android:paddingBottom="16dp"
+        android:text="Teléfono: 999999999"
+        android:textColor="@android:color/black"
+        android:textSize="21dp" />
+
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCerrar"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="16dp"
+        android:layout_height="55dp"
+        style="@style/btn_cerrarsesion"
+        android:text="Cerrar Sesión"
+        android:textAllCaps="false" />
+
+
+</LinearLayout>

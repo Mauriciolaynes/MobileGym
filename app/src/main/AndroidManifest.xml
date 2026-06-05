@@ -21,13 +21,10 @@
             android:name=".MiMembresiaActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity_detalle_rutina"
+            android:name=".PerfilActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity_mis_rutinas"
-            android:exported="false" />
-        <activity
-            android:name=".Activity_mi_membresia"
+            android:name=".ProgresoActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
