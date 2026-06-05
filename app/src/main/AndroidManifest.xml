@@ -12,6 +12,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppGimnasio">
         <activity
+            android:name=".DetalleRutinaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MisRutinasActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MiMembresiaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity_detalle_rutina"
+            android:exported="false" />
+        <activity
+            android:name=".Activity_mis_rutinas"
+            android:exported="false" />
+        <activity
+            android:name=".Activity_mi_membresia"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true" />
         <activity

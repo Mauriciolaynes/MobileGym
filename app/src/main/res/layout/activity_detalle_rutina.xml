@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvNombreRutinaElegida"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Día 1 - Pecho y Tríceps"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#333333"/>
+
+    <TextView
+        android:id="@+id/tvInstruccionesDetalle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lista de ejercicios a realizar:"
+        android:textSize="16sp"
+        android:textColor="#777777"
+        android:layout_marginTop="8dp"/>
+
+    <ListView
+        android:id="@+id/lvEjerciciosRutina"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFinalizarEntrenamiento"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="FINALIZAR ENTRENAMIENTO"
+        android:textSize="16sp"
+        app:cornerRadius="8dp"/>
+
+</LinearLayout>
