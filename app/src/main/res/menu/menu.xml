@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+
+    <item
+        android:id="@+id/inicio"
+        android:title="Inicio"
+        android:icon="@drawable/ic_home" />
+
+    <item
+        android:id="@+id/itlista"
+        android:title="Lista de compras"
+        android:icon="@drawable/ic_lista" />
+
+    <item
+        android:id="@+id/ithistorial"
+        android:title="Historial"
+        android:icon="@drawable/ic_historial" />
+
+    <item
+        android:id="@+id/itperfil"
+        android:title="Mi perfil"
+        android:icon="@drawable/ic_profile" />
+
+    <item
+        android:id="@+id/itcerrar"
+        android:title="Cerrar sesion"
+        android:icon="@drawable/ic_logout" />
+
+
+
+
+
+</menu>
