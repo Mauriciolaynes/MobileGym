@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="@color/white"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Opciones para : Rutina"
+        android:textAlignment="center"
+        android:layout_marginHorizontal="24dp"
+        style="@style/titulo"
+        />
+
+    <ImageView
+        android:id="@+id/ivCancelar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_cancelar"
+        android:layout_gravity="end"
+        android:layout_alignParentEnd="true"
+        />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnEliminarRutina"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Eliminar"
+        android:layout_below="@id/ivCancelar"
+        android:layout_marginTop="16dp"
+        app:backgroundTint="@color/red"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCancelar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancelar"
+        android:layout_below="@id/btnEliminarRutina"
+        android:layout_marginVertical="8dp"
+        android:backgroundTint="#4CAF50"
+        />
+
+</RelativeLayout>
