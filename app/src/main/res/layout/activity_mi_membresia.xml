@@ -43,7 +43,7 @@
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
-            tools:text="Plan Premium" />
+             />
 
         <TextView
             android:id="@+id/tvEstadoPlan"
@@ -52,22 +52,21 @@
             android:layout_marginTop="4dp"
             android:textColor="#4CAF50"
             android:textStyle="bold"
-            tools:text="Estado: ACTIVO" />
+            />
 
         <TextView
             android:id="@+id/tvFechasPlan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            tools:text="Inicio: 01/06/2026 - Fin: 01/07/2026" />
+            />
 
         <TextView
             android:id="@+id/tvPrecioPlan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textStyle="bold"
-            tools:text="Precio: S/ 120.00" />
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <TextView
@@ -80,11 +79,14 @@
         android:textColor="#555555"
         android:layout_marginTop="24dp"/>
 
-    <ListView
-        android:id="@+id/lvHistorialMembresias"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvHistorialMembresias"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
+        tools:listitem="@layout/item_membresia"
         />
 
 </LinearLayout>

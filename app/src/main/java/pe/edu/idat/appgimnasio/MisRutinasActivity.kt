@@ -9,6 +9,6 @@ class MisRutinasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_mis_rutinas)
-        // Eliminado ViewCompat ya que causaba error al no encontrar el ID "main"
+
     }
 }
