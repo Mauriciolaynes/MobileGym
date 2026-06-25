@@ -26,11 +26,14 @@
         android:textColor="#777777"
         android:layout_marginTop="8dp"/>
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lvMisRutinas"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
+        tools:listitem="@layout/item_mis_rutinas"
         />
 
 </LinearLayout>
