@@ -44,7 +44,7 @@ class PrincipalActivity : AppCompatActivity() {
         cvMembership = findViewById(R.id.cvMembership)
         cvRutinas = findViewById(R.id.cvRutinas)
         cvProgreso = findViewById(R.id.cvProgreso)
-        cvAsistencia = findViewById(R.id.cvAsistencia)
+        cvAsistencia = findViewById(R.id.cvCerrarSesion)
         cvPerfil = findViewById(R.id.cvPerfil)
     }
 
