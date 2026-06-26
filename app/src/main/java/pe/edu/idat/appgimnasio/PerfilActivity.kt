@@ -14,10 +14,6 @@ class PerfilActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_perfil)
         
-        // El layout activity_perfil no tiene un root id "main", 
-        // pero podemos aplicar insets al root LinearLayout si le ponemos ID.
-        // Por ahora nos enfocamos en el botón de cerrar sesión.
-        
         val btnCerrar = findViewById<Button>(R.id.btnCerrar)
         btnCerrar.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)

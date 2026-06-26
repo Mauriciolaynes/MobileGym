@@ -9,6 +9,6 @@ class ProgresoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_progreso)
-        // Eliminado ViewCompat ya que causaba error al no encontrar el ID "main"
+
     }
 }

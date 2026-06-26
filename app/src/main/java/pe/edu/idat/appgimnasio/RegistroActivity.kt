@@ -71,14 +71,12 @@ class RegistroActivity : AppCompatActivity() {
         tvBack.setOnClickListener { finish() }
 
         btnRegister.setOnClickListener {
-            // Para pruebas: Navegar al login al registrarse
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             finish()
         }
 
-        // Validaciones en tiempo real
         setupValidationWatcher(etRegDni, tilDni) { it.length == 8 }
         setupValidationWatcher(etRegEmail, tilEmail) { Patterns.EMAIL_ADDRESS.matcher(it).matches() }
         setupValidationWatcher(etRegPhone, tilPhone) { it.length >= 9 }
