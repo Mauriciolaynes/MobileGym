@@ -11,12 +11,12 @@
 
     <item
         android:id="@+id/itlista"
-        android:title="Lista de compras"
+        android:title="Rutinas"
         android:icon="@drawable/ic_lista" />
 
     <item
         android:id="@+id/ithistorial"
-        android:title="Historial"
+        android:title="Progreso"
         android:icon="@drawable/ic_historial" />
 
     <item
