@@ -36,7 +36,6 @@
             android:textSize="26sp"
             android:textStyle="bold" />
 
-        <!-- 2. Información de Membresía -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvMembership"
             android:layout_width="match_parent"
@@ -79,7 +78,6 @@
             android:layout_weight="1"
             android:layout_margin="16dp">
 
-            <!-- Contenido principal (Cards) se puede envolver en un LinearLayout si no se usa Fragments aún -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
