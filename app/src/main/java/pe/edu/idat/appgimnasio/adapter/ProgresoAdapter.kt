@@ -8,12 +8,20 @@ import androidx.recyclerview.widget.RecyclerView
 import pe.edu.idat.appgimnasio.R
 import pe.edu.idat.appgimnasio.entity.Progreso
 
-class ProgresoAdapter(private var listaProgreso: List<Progreso>) :
-    RecyclerView.Adapter<ProgresoAdapter.ViewHolder>() {
+class ProgresoAdapter(
+    private var listaProgreso: List<Progreso>,
+    private val onItemClick: (Progreso) -> Unit
+) : RecyclerView.Adapter<ProgresoAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvFecha: TextView = itemView.findViewById(R.id.tvFechaProgreso)
         val tvPeso: TextView = itemView.findViewById(R.id.tvPesoProgreso)
+
+        init {
+            itemView.setOnClickListener {
+                onItemClick(listaProgreso[adapterPosition])
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

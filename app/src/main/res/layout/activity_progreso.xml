@@ -64,7 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Historial de pesajes"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="12dp"
@@ -76,32 +76,5 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         tools:listitem="@layout/item_progreso"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="13dp"
-        android:weightSum="2">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnEditarProgreso"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            android:text="Editar"
-            android:textAllCaps="false"
-            style="@style/btnPrimary"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnEliminarProgreso"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:text="Borrar"
-            android:textAllCaps="false"
-            style="@style/btn_cerrarsesion" />
-    </LinearLayout>
 
 </LinearLayout>

@@ -50,6 +50,7 @@
                 android:textSize="21sp"
                 android:textStyle="bold"/>
             <TextView
+                android:id="@+id/tvPerfilNombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -70,6 +71,7 @@
                 android:textSize="21sp"
                 android:textStyle="bold"/>
             <TextView
+                android:id="@+id/tvPerfilApellido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mendoza Espinoza"
@@ -112,6 +114,7 @@
                 android:textSize="21sp"
                 android:textStyle="bold"/>
             <TextView
+                android:id="@+id/tvPerfilEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -132,6 +135,7 @@
                 android:textSize="21sp"
                 android:textStyle="bold"/>
             <TextView
+                android:id="@+id/tvPerfilTelefono"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="999 999 999"

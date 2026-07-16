@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -13,6 +14,8 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import pe.edu.idat.appgimnasio.entity.Usuario
+import pe.edu.idat.appgimnasio.repository.UsuarioRepository
 
 class RegistroActivity : AppCompatActivity() {
 
@@ -32,12 +35,14 @@ class RegistroActivity : AppCompatActivity() {
     private lateinit var tilConfirmPassword: TextInputLayout
     private lateinit var btnRegister: MaterialButton
     private lateinit var tvBack: TextView
+    private lateinit var usuarioRepository: UsuarioRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_registro)
 
+        usuarioRepository = UsuarioRepository(this)
         initViews()
         setupListeners()
 
@@ -71,10 +76,9 @@ class RegistroActivity : AppCompatActivity() {
         tvBack.setOnClickListener { finish() }
 
         btnRegister.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-            finish()
+            if (validateAll()) {
+                registrarEnBaseDeDatos()
+            }
         }
 
         setupValidationWatcher(etRegDni, tilDni) { it.length == 8 }
@@ -93,6 +97,28 @@ class RegistroActivity : AppCompatActivity() {
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+    }
+
+    private fun registrarEnBaseDeDatos() {
+        val dni = etRegDni.text.toString().trim()
+        val nombres = etRegName.text.toString().trim()
+        val apellidos = etRegLastName.text.toString().trim()
+        val email = etRegEmail.text.toString().trim()
+        val telefono = etRegPhone.text.toString().trim()
+        val password = etRegPassword.text.toString().trim()
+
+        val nuevoUsuario = Usuario(dni, nombres, apellidos, email, telefono, password)
+        val result = usuarioRepository.registrarUsuario(nuevoUsuario)
+
+        if (result > -1) {
+            Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        } else {
+            Toast.makeText(this, "Error al registrar: El DNI ya existe", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setupValidationWatcher(editText: TextInputEditText, inputLayout: TextInputLayout, validation: (String) -> Boolean) {

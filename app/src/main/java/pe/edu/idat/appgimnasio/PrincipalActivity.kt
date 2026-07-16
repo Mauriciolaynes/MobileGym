@@ -16,10 +16,11 @@ class PrincipalActivity : AppCompatActivity() {
     private lateinit var dlaymenu: DrawerLayout
     private lateinit var nvmenu: NavigationView
     private lateinit var ivmenu: ImageView
+    private lateinit var tvGreeting: android.widget.TextView
     private lateinit var cvMembership: MaterialCardView
     private lateinit var cvRutinas: MaterialCardView
     private lateinit var cvProgreso: MaterialCardView
-    private lateinit var cvAsistencia: MaterialCardView
+    private lateinit var cvCerrarSesion: MaterialCardView
     private lateinit var cvPerfil: MaterialCardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +30,7 @@ class PrincipalActivity : AppCompatActivity() {
 
         initViews()
         setupDrawer()
+        mostrarNombreUsuario()
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.dlaymenu)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -41,11 +43,18 @@ class PrincipalActivity : AppCompatActivity() {
         dlaymenu = findViewById(R.id.dlaymenu)
         nvmenu = findViewById(R.id.nvmenu)
         ivmenu = findViewById(R.id.ivmenu)
+        tvGreeting = findViewById(R.id.tvGreeting)
         cvMembership = findViewById(R.id.cvMembership)
         cvRutinas = findViewById(R.id.cvRutinas)
         cvProgreso = findViewById(R.id.cvProgreso)
-        cvAsistencia = findViewById(R.id.cvCerrarSesion)
+        cvCerrarSesion = findViewById(R.id.cvCerrarSesion)
         cvPerfil = findViewById(R.id.cvPerfil)
+    }
+
+    private fun mostrarNombreUsuario() {
+        val sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE)
+        val userName = sharedPreferences.getString("userName", "Usuario")
+        tvGreeting.text = "Hola, $userName 👋"
     }
 
     private fun setupDrawer() {
@@ -65,8 +74,8 @@ class PrincipalActivity : AppCompatActivity() {
             startActivity(Intent(this, ProgresoActivity::class.java))
         }
 
-        cvAsistencia.setOnClickListener {
-            // startActivity(Intent(this, AsistenciaActivity::class.java))
+        cvCerrarSesion.setOnClickListener {
+            cerrarSesion()
         }
 
         cvPerfil.setOnClickListener {
@@ -88,14 +97,21 @@ class PrincipalActivity : AppCompatActivity() {
                     startActivity(Intent(this, PerfilActivity::class.java))
                 }
                 R.id.itcerrar -> {
-                    val intent = Intent(this, LoginActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                    finish()
+                    cerrarSesion()
                 }
             }
             dlaymenu.closeDrawers()
             true
         }
+    }
+
+    private fun cerrarSesion() {
+        val sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE)
+        sharedPreferences.edit().clear().apply()
+        
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 }

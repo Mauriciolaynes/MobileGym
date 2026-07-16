@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -27,8 +26,6 @@ class ProgresoActivity : AppCompatActivity() {
     private lateinit var btnRegistrarMedida: MaterialButton
     private lateinit var rvHistorialPeso: RecyclerView
 
-    private lateinit var btnEditarProgreso: MaterialButton
-    private lateinit var btnEliminarProgreso: MaterialButton
     private lateinit var progresoRepository: ProgresoRepository
     private lateinit var adapter: ProgresoAdapter
 
@@ -45,12 +42,6 @@ class ProgresoActivity : AppCompatActivity() {
         btnRegistrarMedida.setOnClickListener {
             registrarPeso()
         }
-        btnEditarProgreso.setOnClickListener{
-            editarProgreso()
-        }
-        btnEliminarProgreso.setOnClickListener {
-            eliminarProgreso()
-        }
 
         etBuscarProgreso.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -66,14 +57,27 @@ class ProgresoActivity : AppCompatActivity() {
         etBuscarProgreso = findViewById(R.id.etBuscarProgreso)
         btnRegistrarMedida = findViewById(R.id.btnRegistrarMedida)
         rvHistorialPeso = findViewById(R.id.rvHistorialPeso)
-        btnEditarProgreso = findViewById(R.id.btnEditarProgreso)
-        btnEliminarProgreso = findViewById(R.id.btnEliminarProgreso)
     }
 
     private fun setupRecyclerView() {
-        adapter = ProgresoAdapter(listOf())
+        adapter = ProgresoAdapter(listOf()) { progreso ->
+            mostrarOpciones(progreso)
+        }
         rvHistorialPeso.layoutManager = LinearLayoutManager(this)
         rvHistorialPeso.adapter = adapter
+    }
+
+    private fun mostrarOpciones(progreso: Progreso) {
+        val opciones = arrayOf("Editar", "Eliminar")
+        AlertDialog.Builder(this)
+            .setTitle("Seleccione una opción")
+            .setItems(opciones) { _, which ->
+                when (which) {
+                    0 -> editarProgreso(progreso)
+                    1 -> eliminarProgreso(progreso)
+                }
+            }
+            .show()
     }
 
     private fun loadData() {
@@ -110,47 +114,44 @@ class ProgresoActivity : AppCompatActivity() {
         adapter.actualizarLista(listaFiltrada)
     }
 
-    private fun eliminarProgreso() {
+    private fun eliminarProgreso(progreso: Progreso) {
         AlertDialog.Builder(this)
-            .setTitle("Borrar Historial")
-            .setMessage("¿Estás seguro de que deseas eliminar TODOS los registros de peso?")
-            .setPositiveButton("Sí, borrar todo") { _, _ ->
-                val listaActual = progresoRepository.listarProgreso()
-                for (progreso in listaActual) {
-                    progresoRepository.eliminarProgreso(progreso.idProgreso)
-                }
-
+            .setTitle("Eliminar Registro")
+            .setMessage("¿Estás seguro de que deseas eliminar este registro de peso?")
+            .setPositiveButton("Eliminar") { _, _ ->
+                progresoRepository.eliminarProgreso(progreso.idProgreso)
                 loadData()
-                Toast.makeText(this, "Todo el historial ha sido borrado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Registro eliminado", Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton("Cancelar", null)
             .show()
     }
 
-    private fun editarProgreso() {
-        val layout = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
-        val inputId = EditText(this).apply { hint = "Ingrese ID a editar" }
-        val inputPeso = EditText(this).apply { hint = "Ingrese nuevo peso" }
-        layout.addView(inputId)
-        layout.addView(inputPeso)
+    private fun editarProgreso(progreso: Progreso) {
+        val inputPeso = EditText(this).apply { 
+            hint = "Ingrese nuevo peso"
+            setText(progreso.peso.toString())
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
+        }
 
         AlertDialog.Builder(this)
-            .setTitle("Editar")
-            .setView(layout)
+            .setTitle("Editar Peso")
+            .setView(inputPeso)
             .setPositiveButton("Guardar") { _, _ ->
-                val id = inputId.text.toString().toIntOrNull()
-                val peso = inputPeso.text.toString().toDoubleOrNull()
+                val nuevoPeso = inputPeso.text.toString().toDoubleOrNull()
 
-                if (id != null && peso != null) {
-                    val fecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
-                    progresoRepository.actualizarProgreso(Progreso(id, fecha, peso))
+                if (nuevoPeso != null) {
+                    val progresoActualizado = progreso.copy(peso = nuevoPeso)
+                    progresoRepository.actualizarProgreso(progresoActualizado)
                     loadData()
-                    Toast.makeText(this, "Editado", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Registro actualizado", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this, "Datos inválidos", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Peso inválido", Toast.LENGTH_SHORT).show()
                 }
             }
+            .setNegativeButton("Cancelar", null)
             .show()
     }
+
 
 }
