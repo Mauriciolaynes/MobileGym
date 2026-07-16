@@ -4,8 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import pe.edu.idat.appgimnasio.R
 import pe.edu.idat.appgimnasio.entity.EjercicioRutina
 
@@ -22,6 +24,10 @@ class EjercicioAdapter(private val context: Context, private var lista: List<Eje
 
         holder.tvItemNombreEjercicio.text = ejercicio.nombreEjercicio
         holder.tvItemSeriesRepeticiones.text = "${ejercicio.series} series x ${ejercicio.repeticiones} repeticiones"
+
+        Glide.with(context)
+            .load(ejercicio.urlGif)
+            .into(holder.ivItemImagenEjercicio)
     }
 
     override fun getItemCount(): Int {
@@ -31,6 +37,8 @@ class EjercicioAdapter(private val context: Context, private var lista: List<Eje
     inner class EjercicioViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
         val tvItemNombreEjercicio: TextView = itemview.findViewById<TextView>(R.id.tvItemNombreEjercicio)
         val tvItemSeriesRepeticiones: TextView = itemview.findViewById<TextView>(R.id.tvItemSeriesRepeticiones)
+
+        val ivItemImagenEjercicio: ImageView = itemview.findViewById(R.id.ivItemImagenEjercicio)
     }
 
     fun actualizarDatos(nuevosEjercicios: List<EjercicioRutina>) {

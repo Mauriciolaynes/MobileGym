@@ -4,5 +4,6 @@ data class EjercicioRutina (
     val idEjercicio: Int,
     val nombreEjercicio: String,
     val series: Int,
-    val repeticiones: Int
+    val repeticiones: Int,
+    val urlGif: Int
 )
