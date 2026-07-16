@@ -52,4 +52,17 @@ class ProgresoRepository(context: Context) {
         }
         return list
     }
+    fun actualizarProgreso(progreso: Progreso): Int {
+        val db = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put("fechaRegistro", progreso.fechaRegistro)
+            put("peso", progreso.peso)
+        }
+        return db.update("progreso", values, "idProgreso = ?", arrayOf(progreso.idProgreso.toString()))
+    }
+
+    fun eliminarProgreso(idProgreso: Int): Int {
+        val db = dbHelper.writableDatabase
+        return db.delete("progreso", "idProgreso = ?", arrayOf(idProgreso.toString()))
+    }
 }
