@@ -115,13 +115,12 @@ class ProgresoActivity : AppCompatActivity() {
             .setTitle("Borrar Historial")
             .setMessage("¿Estás seguro de que deseas eliminar TODOS los registros de peso?")
             .setPositiveButton("Sí, borrar todo") { _, _ ->
-                // Traemos la lista actual y la recorremos para borrar cada elemento
                 val listaActual = progresoRepository.listarProgreso()
                 for (progreso in listaActual) {
                     progresoRepository.eliminarProgreso(progreso.idProgreso)
                 }
 
-                loadData() // Recargamos la lista (ahora estará vacía)
+                loadData()
                 Toast.makeText(this, "Todo el historial ha sido borrado", Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton("Cancelar", null)
