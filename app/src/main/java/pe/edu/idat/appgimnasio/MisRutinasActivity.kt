@@ -39,10 +39,10 @@ class MisRutinasActivity : AppCompatActivity() {
     }
     private fun cargarMisRutinas() {
         val listaPrueba = listOf(
-            Rutina(1, "Día 1: Pecho y Tríceps"),
-            Rutina(2, "Día 2: Espalda y Bíceps"),
-            Rutina(3, "Día 3: Piernas y Hombros"),
-            Rutina(4, "Día 4: Full Body")
+            Rutina(1, "Día 1: Pecho y Tríceps",R.drawable.remada),
+            Rutina(2, "Día 2: Espalda y Bíceps",R.drawable.remada),
+            Rutina(3, "Día 3: Piernas y Hombros",R.drawable.remada),
+            Rutina(4, "Día 4: Full Body",R.drawable.remada)
         )
         adapter.actualizarDatos(listaPrueba)
     }

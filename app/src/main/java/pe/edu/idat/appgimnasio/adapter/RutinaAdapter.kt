@@ -4,8 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import pe.edu.idat.appgimnasio.R
 import pe.edu.idat.appgimnasio.entity.Rutina
 
@@ -29,6 +31,10 @@ class RutinaAdapter(
         holder.itemView.setOnClickListener {
             onItemClick(rutina)
         }
+
+        Glide.with(context)
+            .load(rutina.urlGif)
+            .into(holder.ivItemImagenRutina)
     }
 
     override fun getItemCount(): Int {
@@ -37,6 +43,9 @@ class RutinaAdapter(
 
     inner class RutinaViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
         val tvNombreRutina: TextView = itemview.findViewById(R.id.tvNombreRutina)
+
+        val ivItemImagenRutina: ImageView = itemview.findViewById(R.id.ivItemImagenRutina)
+
     }
 
     fun actualizarDatos(nuevasRutinas: List<Rutina>) {
