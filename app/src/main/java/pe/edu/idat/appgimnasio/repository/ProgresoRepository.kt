@@ -1,68 +1,29 @@
 package pe.edu.idat.appgimnasio.repository
 
-import android.content.ContentValues
-import android.content.Context
-import pe.edu.idat.appgimnasio.data.AppDatabaseHelper
+import pe.edu.idat.appgimnasio.api.ProgresoApi
+import pe.edu.idat.appgimnasio.api.RetrofitClient
 import pe.edu.idat.appgimnasio.entity.Progreso
+import pe.edu.idat.appgimnasio.entity.dto.ProgresoRegistroDTO
+import retrofit2.Call
 
-class ProgresoRepository(context: Context) {
-    private val dbHelper = AppDatabaseHelper(context)
+class ProgresoRepository {
+    private val api = RetrofitClient.instance.create(ProgresoApi::class.java)
 
-    fun registrarProgreso(progreso: Progreso): Long {
-        val db = dbHelper.writableDatabase
-        val values = ContentValues().apply {
-            put("fechaRegistro", progreso.fechaRegistro)
-            put("peso", progreso.peso)
-        }
-        return db.insert("progreso", null, values)
+    fun listarProgresosPorUsuario(idUsuario: Int): Call<List<Progreso>> {
+        return api.obtenerProgresosPorUsuario(idUsuario)
     }
 
-    fun listarProgreso(): List<Progreso> {
-        val db = dbHelper.readableDatabase
-        val list = mutableListOf<Progreso>()
-        db.rawQuery("SELECT * FROM progreso ORDER BY idProgreso DESC", null).use { cursor ->
-            while (cursor.moveToNext()) {
-                list.add(
-                    Progreso(
-                        idProgreso = cursor.getInt(cursor.getColumnIndexOrThrow("idProgreso")),
-                        fechaRegistro = cursor.getString(cursor.getColumnIndexOrThrow("fechaRegistro")),
-                        peso = cursor.getDouble(cursor.getColumnIndexOrThrow("peso"))
-                    )
-                )
-            }
-        }
-        return list
+    fun registrarProgreso(idUsuario: Int, fecha: String, peso: Double): Call<Progreso> {
+        val dto = ProgresoRegistroDTO(idUsuario, fecha, peso)
+        return api.registrarProgreso(dto)
     }
 
-    fun buscarProgresoPorFecha(fecha: String): List<Progreso> {
-        val db = dbHelper.readableDatabase
-        val list = mutableListOf<Progreso>()
-        val query = "SELECT * FROM progreso WHERE fechaRegistro LIKE ? ORDER BY idProgreso DESC"
-        val args = arrayOf("%$fecha%")
-        db.rawQuery(query, args).use { cursor ->
-            while (cursor.moveToNext()) {
-                list.add(
-                    Progreso(
-                        idProgreso = cursor.getInt(cursor.getColumnIndexOrThrow("idProgreso")),
-                        fechaRegistro = cursor.getString(cursor.getColumnIndexOrThrow("fechaRegistro")),
-                        peso = cursor.getDouble(cursor.getColumnIndexOrThrow("peso"))
-                    )
-                )
-            }
-        }
-        return list
-    }
-    fun actualizarProgreso(progreso: Progreso): Int {
-        val db = dbHelper.writableDatabase
-        val values = ContentValues().apply {
-            put("fechaRegistro", progreso.fechaRegistro)
-            put("peso", progreso.peso)
-        }
-        return db.update("progreso", values, "idProgreso = ?", arrayOf(progreso.idProgreso.toString()))
+    fun actualizarProgreso(idProgreso: Int, idUsuario: Int, fecha: String, peso: Double): Call<Progreso> {
+        val dto = ProgresoRegistroDTO(idUsuario, fecha, peso)
+        return api.actualizarProgreso(idProgreso, dto)
     }
 
-    fun eliminarProgreso(idProgreso: Int): Int {
-        val db = dbHelper.writableDatabase
-        return db.delete("progreso", "idProgreso = ?", arrayOf(idProgreso.toString()))
+    fun eliminarProgreso(idProgreso: Int): Call<Void> {
+        return api.eliminarProgreso(idProgreso)
     }
 }
