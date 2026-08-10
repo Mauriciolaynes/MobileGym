@@ -28,10 +28,9 @@ class DetalleRutinaActivity : AppCompatActivity() {
         // ¡Eliminamos enableEdgeToEdge() para arreglar los márgenes!
         setContentView(R.layout.activity_detalle_rutina)
 
-        // Configuración de la flecha de retroceso
         val toolbar = findViewById<Toolbar>(R.id.toolbarDetalle)
         toolbar.setNavigationOnClickListener {
-            finish() // Cierra la pantalla y regresa
+            finish()
         }
 
         tvTituloDetalle = findViewById(R.id.tvNombreRutinaElegida)
@@ -46,7 +45,6 @@ class DetalleRutinaActivity : AppCompatActivity() {
 
         tvTituloDetalle.text = nombreRutina
 
-        // Configuración del botón Finalizar
         val btnFinalizar = findViewById<MaterialButton>(R.id.btnFinalizarEntrenamiento)
         btnFinalizar.setOnClickListener {
             Toast.makeText(this, "¡Entrenamiento finalizado con éxito!", Toast.LENGTH_LONG).show()

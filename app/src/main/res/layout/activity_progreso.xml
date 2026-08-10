@@ -7,7 +7,6 @@
     android:orientation="vertical"
     android:background="#F4F6F8">
 
-    <!-- Custom Toolbar -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,7 +47,6 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- Card for Adding New Weight -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -108,7 +106,6 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Search Section -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilBuscarProgreso"
                 android:layout_width="match_parent"

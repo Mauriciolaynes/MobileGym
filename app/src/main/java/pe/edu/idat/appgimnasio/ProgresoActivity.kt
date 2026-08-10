@@ -83,11 +83,9 @@ class ProgresoActivity : AppCompatActivity() {
         val datePickerDialog = android.app.DatePickerDialog(
             this,
             { _, selectedYear, selectedMonth, selectedDay ->
-                // Formato para mostrar en el EditText (dd/MM/yyyy)
                 val fechaMostrada = String.format(Locale.getDefault(), "%02d/%02d/%04d", selectedDay, selectedMonth + 1, selectedYear)
                 etBuscarProgreso.setText(fechaMostrada)
                 
-                // Formato para filtrar (el backend usa yyyy-MM-dd)
                 val fechaFiltro = String.format(Locale.getDefault(), "%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
                 filtrarProgreso(fechaFiltro)
             },

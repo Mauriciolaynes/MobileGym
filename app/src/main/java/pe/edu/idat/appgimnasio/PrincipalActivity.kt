@@ -65,7 +65,7 @@ class PrincipalActivity : AppCompatActivity() {
         cvMembership = findViewById(R.id.cvMembership)
         cvRutinas = findViewById(R.id.cvRutinas)
         cvProgreso = findViewById(R.id.cvProgreso)
-        cvCerrarSesion = findViewById(R.id.cvCerrarSesion) // Este ahora dice "Mi Plan" en el XML
+        cvCerrarSesion = findViewById(R.id.cvCerrarSesion)
         cvPerfil = findViewById(R.id.cvPerfil)
 
         tvMenuTipoPlan = findViewById(R.id.tvMenuTipoPlan)
@@ -151,8 +151,7 @@ class PrincipalActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val lista = response.body() ?: emptyList()
                         if (lista.isNotEmpty()) {
-                            // El backend devuelve la lista, tomamos el último registro (asumiendo orden cronológico)
-                            // o el que tenga mayor ID si el backend no ordena.
+
                             val ultimo = lista.maxByOrNull { it.idProgreso }
                             if (ultimo != null) {
                                 tvLastWeight.text = "${ultimo.peso} Kg"
@@ -191,7 +190,6 @@ class PrincipalActivity : AppCompatActivity() {
         }
 
         cvCerrarSesion.setOnClickListener {
-            // Este tile ahora lo usamos para ir a Membresía también
             startActivity(Intent(this, MiMembresiaActivity::class.java))
         }
 

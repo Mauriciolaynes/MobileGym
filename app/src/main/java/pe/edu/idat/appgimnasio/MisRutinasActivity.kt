@@ -28,7 +28,6 @@ class MisRutinasActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // SOLUCIÓN: Cargar el diseño ANTES de buscar la barra
         setContentView(R.layout.activity_mis_rutinas)
 
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarMisRutinas)

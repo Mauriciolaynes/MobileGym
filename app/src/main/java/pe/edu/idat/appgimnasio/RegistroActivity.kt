@@ -106,7 +106,7 @@ class RegistroActivity : AppCompatActivity() {
         val dni = etRegDni.text.toString().trim()
         val nombres = etRegName.text.toString().trim()
         val apellidos = etRegLastName.text.toString().trim()
-        val email = etRegEmail.text.toString().trim() // Se mandará como "correo"
+        val email = etRegEmail.text.toString().trim()
         val telefono = etRegPhone.text.toString().trim()
         val password = etRegPassword.text.toString().trim()
 
@@ -114,7 +114,6 @@ class RegistroActivity : AppCompatActivity() {
         btnRegister.isEnabled = false
         btnRegister.text = "Registrando..."
 
-        // Preparamos el objeto con rol por defecto "CLIENTE"
         val request = UsuarioRegistroDTO(dni, nombres, apellidos, email, telefono, password)
 
         val api = RetrofitClient.instance.create(UsuarioApi::class.java)

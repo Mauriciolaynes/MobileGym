@@ -25,7 +25,6 @@ class EjercicioAdapter(private val context: Context, private var lista: List<Eje
         holder.tvItemNombreEjercicio.text = ejercicio.nombreEjercicio
         holder.tvItemSeriesRepeticiones.text = "${ejercicio.series} series x ${ejercicio.repeticiones} repeticiones"
 
-        // Validación y carga de imagen pequeña
         if (!ejercicio.imagenUrl.isNullOrEmpty()) {
             val urlCompleta = "http://192.168.18.6:8080/ejercicios/${ejercicio.imagenUrl}"
 

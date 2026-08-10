@@ -8,11 +8,9 @@ import retrofit2.http.Path
 
 interface RutinaApi {
 
-    // Obtener rutinas de un cliente específico
     @GET("rutinas/usuario/{idUsuario}")
     fun obtenerRutinasDeUsuario(@Path("idUsuario") idUsuario: Int): Call<List<Rutina>>
 
-    // Obtener los ejercicios de una rutina
     @GET("rutinas/{idRutina}/ejercicios")
     fun obtenerEjerciciosDeRutina(@Path("idRutina") idRutina: Int): Call<List<EjercicioRutina>>
 }
