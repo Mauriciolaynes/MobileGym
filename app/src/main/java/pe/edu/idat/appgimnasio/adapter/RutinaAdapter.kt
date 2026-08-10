@@ -25,16 +25,20 @@ class RutinaAdapter(
     override fun onBindViewHolder(holder: RutinaViewHolder, position: Int) {
         val rutina = lista[position]
 
-        holder.tvNombreRutina.text = rutina.idNombreRutina
-
+        holder.tvNombreRutina.text = rutina.nombreRutina
 
         holder.itemView.setOnClickListener {
             onItemClick(rutina)
         }
 
-        Glide.with(context)
-            .load(rutina.urlGif)
-            .into(holder.ivItemImagenRutina)
+        if (!rutina.imagenUrl.isNullOrEmpty()) {
+            val urlCompleta = "http://192.168.18.6:8080/rutinas/${rutina.imagenUrl}"
+            Glide.with(context)
+                .load(urlCompleta)
+                .into(holder.ivItemImagenRutina)
+        } else {
+            holder.ivItemImagenRutina.setImageResource(R.drawable.ic_launcher_background)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -42,10 +46,8 @@ class RutinaAdapter(
     }
 
     inner class RutinaViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
-        val tvNombreRutina: TextView = itemview.findViewById(R.id.tvNombreRutina)
-
+        val tvNombreRutina: TextView = itemview.findViewById(R.id.tvItemNombreRutina)
         val ivItemImagenRutina: ImageView = itemview.findViewById(R.id.ivItemImagenRutina)
-
     }
 
     fun actualizarDatos(nuevasRutinas: List<Rutina>) {

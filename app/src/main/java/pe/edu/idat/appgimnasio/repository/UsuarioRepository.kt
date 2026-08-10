@@ -3,39 +3,48 @@ package pe.edu.idat.appgimnasio.repository
 import android.content.ContentValues
 import android.content.Context
 import pe.edu.idat.appgimnasio.data.AppDatabaseHelper
-import pe.edu.idat.appgimnasio.entity.Usuario
+import pe.edu.idat.appgimnasio.entity.dto.LoginResponseDTO
 
 class UsuarioRepository(context: Context) {
     private val dbHelper = AppDatabaseHelper(context)
 
-    fun registrarUsuario(usuario: Usuario): Long {
+    fun guardarSesionLocal(usuario: LoginResponseDTO) {
         val db = dbHelper.writableDatabase
+
+        db.delete("usuario", null, null)
+
         val values = ContentValues().apply {
-            put("dni", usuario.dni)
+            put("idUsuario", usuario.idUsuario)
             put("nombres", usuario.nombres)
             put("apellidos", usuario.apellidos)
-            put("email", usuario.email)
+            put("correo", usuario.correo)
             put("telefono", usuario.telefono)
-            put("password", usuario.password)
+            put("rol", usuario.rol)
         }
-        return db.insert("usuario", null, values)
+        db.insert("usuario", null, values)
     }
 
-    fun validarUsuario(email: String, password: String): Usuario? {
+    fun obtenerSesionActiva(): LoginResponseDTO? {
         val db = dbHelper.readableDatabase
-        val query = "SELECT * FROM usuario WHERE LOWER(email) = LOWER(?) AND password = ?"
-        db.rawQuery(query, arrayOf(email.trim(), password.trim())).use { cursor ->
+        val query = "SELECT * FROM usuario LIMIT 1"
+
+        db.rawQuery(query, null).use { cursor ->
             if (cursor.moveToFirst()) {
-                return Usuario(
-                    dni = cursor.getString(cursor.getColumnIndexOrThrow("dni")),
-                    nombres = cursor.getString(cursor.getColumnIndexOrThrow("nombres")),
-                    apellidos = cursor.getString(cursor.getColumnIndexOrThrow("apellidos")),
-                    email = cursor.getString(cursor.getColumnIndexOrThrow("email")),
-                    telefono = cursor.getString(cursor.getColumnIndexOrThrow("telefono")),
-                    password = cursor.getString(cursor.getColumnIndexOrThrow("password"))
+                return LoginResponseDTO(
+                    idUsuario = cursor.getInt(cursor.getColumnIndexOrThrow("idUsuario")),
+                    nombres = cursor.getString(cursor.getColumnIndexOrThrow("nombres")) ?: "",
+                    apellidos = cursor.getString(cursor.getColumnIndexOrThrow("apellidos")) ?: "",
+                    correo = cursor.getString(cursor.getColumnIndexOrThrow("correo")) ?: "",
+                    telefono = cursor.getString(cursor.getColumnIndexOrThrow("telefono")) ?: "",
+                    rol = cursor.getString(cursor.getColumnIndexOrThrow("rol")) ?: ""
                 )
             }
         }
         return null
+    }
+
+    fun cerrarSesion() {
+        val db = dbHelper.writableDatabase
+        db.delete("usuario", null, null)
     }
 }

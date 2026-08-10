@@ -2,41 +2,51 @@ package pe.edu.idat.appgimnasio
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
-import androidx.activity.enableEdgeToEdge
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.navigation.NavigationView
+import pe.edu.idat.appgimnasio.api.MembresiaApi
+import pe.edu.idat.appgimnasio.api.RetrofitClient
+import pe.edu.idat.appgimnasio.entity.Membresia
+import pe.edu.idat.appgimnasio.repository.UsuarioRepository
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class PrincipalActivity : AppCompatActivity() {
 
     private lateinit var dlaymenu: DrawerLayout
     private lateinit var nvmenu: NavigationView
     private lateinit var ivmenu: ImageView
-    private lateinit var tvGreeting: android.widget.TextView
+    private lateinit var tvGreeting: TextView
     private lateinit var cvMembership: MaterialCardView
     private lateinit var cvRutinas: MaterialCardView
     private lateinit var cvProgreso: MaterialCardView
     private lateinit var cvCerrarSesion: MaterialCardView
     private lateinit var cvPerfil: MaterialCardView
 
+    private lateinit var tvMenuTipoPlan: TextView
+    private lateinit var tvMenuFechaPlan: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_principal)
 
         initViews()
         setupDrawer()
         mostrarNombreUsuario()
+    }
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.dlaymenu)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+    override fun onResume() {
+        super.onResume()
+        cargarMembresiaActiva()
     }
 
     private fun initViews() {
@@ -49,12 +59,75 @@ class PrincipalActivity : AppCompatActivity() {
         cvProgreso = findViewById(R.id.cvProgreso)
         cvCerrarSesion = findViewById(R.id.cvCerrarSesion)
         cvPerfil = findViewById(R.id.cvPerfil)
+
+        tvMenuTipoPlan = findViewById(R.id.tvMenuTipoPlan)
+        tvMenuFechaPlan = findViewById(R.id.tvMenuFechaPlan)
     }
 
     private fun mostrarNombreUsuario() {
-        val sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE)
-        val userName = sharedPreferences.getString("userName", "Usuario")
-        tvGreeting.text = "Hola, $userName 👋"
+        val usuarioRepository = UsuarioRepository(this)
+        val sesion = usuarioRepository.obtenerSesionActiva()
+
+        val nombreCompleto = sesion?.nombres ?: "Cliente"
+
+        val primerNombre = nombreCompleto.split(" ").firstOrNull() ?: "Cliente"
+
+        tvGreeting.text = "Hola, $primerNombre \uD83D\uDC4B"
+    }
+
+    private fun cargarMembresiaActiva() {
+        val usuarioRepository = UsuarioRepository(this)
+        val sesion = usuarioRepository.obtenerSesionActiva()
+        val idUsuarioLogueado = sesion?.idUsuario ?: -1
+
+        if (idUsuarioLogueado != -1) {
+            val apiMembresia = RetrofitClient.instance.create(MembresiaApi::class.java)
+
+            apiMembresia.obtenerMembresiasDeUsuario(idUsuarioLogueado).enqueue(object : Callback<List<Membresia>> {
+                override fun onResponse(call: Call<List<Membresia>>, response: Response<List<Membresia>>) {
+                    if (response.isSuccessful) {
+                        val membresias = response.body() ?: emptyList()
+                        val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+                        val hoyString = formatoFecha.format(Date())
+                        val fechaHoySinHora = formatoFecha.parse(hoyString)
+
+                        val membresiaActiva = membresias.find { membresia ->
+                            try {
+                                val fechaFinObj = formatoFecha.parse(membresia.fechaFin)
+                                val estadoLimpio = membresia.estado.trim().lowercase()
+
+                                val estaActivaEnTexto = estadoLimpio.startsWith("activ")
+                                val noEstaVencidaEnFecha = fechaFinObj != null && fechaHoySinHora != null && !fechaFinObj.before(fechaHoySinHora)
+
+                                estaActivaEnTexto && noEstaVencidaEnFecha
+                            } catch (e: Exception) {
+                                false
+                            }
+                        }
+
+                        if (membresiaActiva != null) {
+                            val nombrePlan = if (membresiaActiva.tipoMembresia.isNullOrBlank()) "PLAN ACTIVO" else membresiaActiva.tipoMembresia.uppercase()
+
+                            tvMenuTipoPlan.text = nombrePlan
+                            tvMenuFechaPlan.text = "Vence: ${membresiaActiva.fechaFin}"
+                        } else {
+                            tvMenuTipoPlan.text = "Sin Plan Activo"
+                            tvMenuFechaPlan.text = "Toca aquí para ver tu historial"
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<List<Membresia>>, t: Throwable) {
+                    Log.e("PrincipalActivity", "Error de red: ${t.message}")
+                    tvMenuTipoPlan.text = "Modo sin conexión"
+                    tvMenuFechaPlan.text = "Revisa tu internet"
+                }
+            })
+        } else {
+            tvMenuTipoPlan.text = "Error de sesión"
+            tvMenuFechaPlan.text = "Inicia sesión nuevamente"
+        }
     }
 
     private fun setupDrawer() {
@@ -84,9 +157,7 @@ class PrincipalActivity : AppCompatActivity() {
 
         nvmenu.setNavigationItemSelectedListener { menuitem ->
             when (menuitem.itemId) {
-                R.id.inicio -> {
-                    // Ya estamos en el inicio
-                }
+                R.id.inicio -> { }
                 R.id.itlista -> {
                     startActivity(Intent(this, MisRutinasActivity::class.java))
                 }
@@ -108,7 +179,7 @@ class PrincipalActivity : AppCompatActivity() {
     private fun cerrarSesion() {
         val sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE)
         sharedPreferences.edit().clear().apply()
-        
+
         val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)

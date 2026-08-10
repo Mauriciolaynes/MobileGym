@@ -6,87 +6,88 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5F5"
-    android:padding="16dp">
+    android:background="#F5F5F5">
 
-    <TextView
-        android:id="@+id/tvTituloMembresia"
+    <!-- Barra superior con botón de retroceso -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarMembresia"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Mi Membresía"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="#333333"/>
-
-    <TextView
-        android:id="@+id/tvSubtituloActual"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="⭐ PLAN ACTUAL"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="#555555"
-        android:layout_marginTop="24dp"/>
-
-
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        app:title="Mi Membresía"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:elevation="4dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/tvTipoPlan"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvSubtituloActual"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:textSize="20sp"
+            android:text="⭐ PLAN ACTUAL"
+            android:textSize="14sp"
             android:textStyle="bold"
-             />
+            android:textColor="#555555" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvTipoPlan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvEstadoPlan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="#4CAF50"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvFechasPlan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/tvPrecioPlan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textStyle="bold"/>
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tvEstadoPlan"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvSubtituloHistorial"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textColor="#4CAF50"
+            android:text="📋 HISTORIAL DE PLANES"
+            android:textSize="14sp"
             android:textStyle="bold"
-            />
+            android:textColor="#555555"
+            android:layout_marginTop="24dp"/>
 
-        <TextView
-            android:id="@+id/tvFechasPlan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvHistorialMembresias"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp"
             android:layout_marginTop="8dp"
-            />
-
-        <TextView
-            android:id="@+id/tvPrecioPlan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textStyle="bold"/>
+            tools:listitem="@layout/item_membresia" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvSubtituloHistorial"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="📋 HISTORIAL DE PLANES"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="#555555"
-        android:layout_marginTop="24dp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvHistorialMembresias"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:paddingBottom="16dp"
-        tools:listitem="@layout/item_membresia"
-        />
-
 </LinearLayout>

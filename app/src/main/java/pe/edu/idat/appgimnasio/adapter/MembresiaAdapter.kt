@@ -19,19 +19,19 @@ class MembresiaAdapter (private val context : Context, private var lista: List<M
         return MembresiaViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: MembresiaAdapter.MembresiaViewHolder,position: Int) {
+    override fun onBindViewHolder(holder: MembresiaViewHolder, position: Int) {
         val membresia = lista[position]
 
         holder.tvItemTipoPlan.text = membresia.tipoMembresia
-        holder.tvItemEstado.text = membresia.estado.uppercase()
+        holder.tvItemEstado.text = membresia.estado.trim().uppercase()
         holder.tvItemFechas.text = "${membresia.fechaInicio} - ${membresia.fechaFin}"
         holder.tvItemPrecio.text = "S/ ${String.format("%.2f", membresia.precio)}"
 
-
-        if (membresia.estado.lowercase() != "activo") {
-            holder.tvItemEstado.setTextColor(context.getColor(android.R.color.holo_red_dark))
-        } else {
+        val estadoLimpio = membresia.estado.trim().lowercase()
+        if (estadoLimpio.startsWith("activ")) {
             holder.tvItemEstado.setTextColor(context.getColor(android.R.color.holo_green_dark))
+        } else {
+            holder.tvItemEstado.setTextColor(context.getColor(android.R.color.holo_red_dark))
         }
     }
 

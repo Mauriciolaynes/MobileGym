@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class AppDatabaseHelper(context: Context) : SQLiteOpenHelper(context, "gym.db", null, 2) {
+class AppDatabaseHelper(context: Context) : SQLiteOpenHelper(context, "gym.db", null, 3) {
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("""
             CREATE TABLE progreso (
@@ -16,12 +16,12 @@ class AppDatabaseHelper(context: Context) : SQLiteOpenHelper(context, "gym.db", 
 
         db.execSQL("""
             CREATE TABLE usuario (
-                dni TEXT PRIMARY KEY NOT NULL,
+                idUsuario INTEGER PRIMARY KEY NOT NULL,
                 nombres TEXT,
                 apellidos TEXT,
-                email TEXT,
+                correo TEXT,
                 telefono TEXT,
-                password TEXT
+                rol TEXT
             )
         """.trimIndent())
     }

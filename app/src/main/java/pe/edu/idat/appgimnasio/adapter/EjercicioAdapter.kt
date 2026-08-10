@@ -25,9 +25,36 @@ class EjercicioAdapter(private val context: Context, private var lista: List<Eje
         holder.tvItemNombreEjercicio.text = ejercicio.nombreEjercicio
         holder.tvItemSeriesRepeticiones.text = "${ejercicio.series} series x ${ejercicio.repeticiones} repeticiones"
 
+        // Validación y carga de imagen pequeña
+        if (!ejercicio.imagenUrl.isNullOrEmpty()) {
+            val urlCompleta = "http://192.168.18.6:8080/ejercicios/${ejercicio.imagenUrl}"
+
+            Glide.with(context)
+                .load(urlCompleta)
+                .into(holder.ivItemImagenEjercicio)
+
+            holder.ivItemImagenEjercicio.setOnClickListener {
+                mostrarDialogoImagen(urlCompleta)
+            }
+        } else {
+            holder.ivItemImagenEjercicio.setImageResource(R.drawable.ic_launcher_background)
+            holder.ivItemImagenEjercicio.setOnClickListener(null)
+        }
+    }
+
+    private fun mostrarDialogoImagen(urlCompleta: String) {
+        val dialog = android.app.Dialog(context)
+        dialog.setContentView(R.layout.dialog_imagen_ampliada)
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        val ivImagenGrande = dialog.findViewById<ImageView>(R.id.ivImagenGrande)
+
         Glide.with(context)
-            .load(ejercicio.urlGif)
-            .into(holder.ivItemImagenEjercicio)
+            .load(urlCompleta)
+            .into(ivImagenGrande)
+
+        dialog.show()
     }
 
     override fun getItemCount(): Int {
@@ -35,9 +62,8 @@ class EjercicioAdapter(private val context: Context, private var lista: List<Eje
     }
 
     inner class EjercicioViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
-        val tvItemNombreEjercicio: TextView = itemview.findViewById<TextView>(R.id.tvItemNombreEjercicio)
-        val tvItemSeriesRepeticiones: TextView = itemview.findViewById<TextView>(R.id.tvItemSeriesRepeticiones)
-
+        val tvItemNombreEjercicio: TextView = itemview.findViewById(R.id.tvItemNombreEjercicio)
+        val tvItemSeriesRepeticiones: TextView = itemview.findViewById(R.id.tvItemSeriesRepeticiones)
         val ivItemImagenEjercicio: ImageView = itemview.findViewById(R.id.ivItemImagenEjercicio)
     }
 

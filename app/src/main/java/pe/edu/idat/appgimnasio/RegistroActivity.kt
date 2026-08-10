@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.util.Patterns
 import android.widget.TextView
 import android.widget.Toast
@@ -14,8 +15,12 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import pe.edu.idat.appgimnasio.entity.Usuario
-import pe.edu.idat.appgimnasio.repository.UsuarioRepository
+import pe.edu.idat.appgimnasio.api.RetrofitClient
+import pe.edu.idat.appgimnasio.api.UsuarioApi
+import pe.edu.idat.appgimnasio.entity.dto.UsuarioRegistroDTO
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RegistroActivity : AppCompatActivity() {
 
@@ -35,14 +40,12 @@ class RegistroActivity : AppCompatActivity() {
     private lateinit var tilConfirmPassword: TextInputLayout
     private lateinit var btnRegister: MaterialButton
     private lateinit var tvBack: TextView
-    private lateinit var usuarioRepository: UsuarioRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_registro)
 
-        usuarioRepository = UsuarioRepository(this)
         initViews()
         setupListeners()
 
@@ -77,7 +80,7 @@ class RegistroActivity : AppCompatActivity() {
 
         btnRegister.setOnClickListener {
             if (validateAll()) {
-                registrarEnBaseDeDatos()
+                registrarEnBackend()
             }
         }
 
@@ -85,7 +88,7 @@ class RegistroActivity : AppCompatActivity() {
         setupValidationWatcher(etRegEmail, tilEmail) { Patterns.EMAIL_ADDRESS.matcher(it).matches() }
         setupValidationWatcher(etRegPhone, tilPhone) { it.length >= 9 }
         setupValidationWatcher(etRegPassword, tilPassword) { it.length >= 6 }
-        
+
         etRegConfirmPassword.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -99,26 +102,46 @@ class RegistroActivity : AppCompatActivity() {
         })
     }
 
-    private fun registrarEnBaseDeDatos() {
+    private fun registrarEnBackend() {
         val dni = etRegDni.text.toString().trim()
         val nombres = etRegName.text.toString().trim()
         val apellidos = etRegLastName.text.toString().trim()
-        val email = etRegEmail.text.toString().trim()
+        val email = etRegEmail.text.toString().trim() // Se mandará como "correo"
         val telefono = etRegPhone.text.toString().trim()
         val password = etRegPassword.text.toString().trim()
 
-        val nuevoUsuario = Usuario(dni, nombres, apellidos, email, telefono, password)
-        val result = usuarioRepository.registrarUsuario(nuevoUsuario)
 
-        if (result > -1) {
-            Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-            finish()
-        } else {
-            Toast.makeText(this, "Error al registrar: El DNI ya existe", Toast.LENGTH_SHORT).show()
-        }
+        btnRegister.isEnabled = false
+        btnRegister.text = "Registrando..."
+
+        // Preparamos el objeto con rol por defecto "CLIENTE"
+        val request = UsuarioRegistroDTO(dni, nombres, apellidos, email, telefono, password)
+
+        val api = RetrofitClient.instance.create(UsuarioApi::class.java)
+
+        api.registrarUsuario(request).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                btnRegister.isEnabled = true
+                btnRegister.text = "Registrar"
+
+                if (response.isSuccessful) {
+                    Toast.makeText(this@RegistroActivity, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this@RegistroActivity, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(this@RegistroActivity, "Error al registrar. Verifica los datos.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                btnRegister.isEnabled = true
+                btnRegister.text = "Registrar"
+                Log.e("Registro", "Error de red: ${t.message}")
+                Toast.makeText(this@RegistroActivity, "Error de conexión al servidor", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun setupValidationWatcher(editText: TextInputEditText, inputLayout: TextInputLayout, validation: (String) -> Boolean) {

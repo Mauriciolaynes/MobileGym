@@ -1,18 +1,28 @@
 package pe.edu.idat.appgimnasio
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pe.edu.idat.appgimnasio.adapter.MembresiaAdapter
+import pe.edu.idat.appgimnasio.api.MembresiaApi
+import pe.edu.idat.appgimnasio.api.RetrofitClient
 import pe.edu.idat.appgimnasio.entity.Membresia
+import pe.edu.idat.appgimnasio.repository.UsuarioRepository
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MiMembresiaActivity : AppCompatActivity() {
     private lateinit var rvHistorialMembresias: RecyclerView
     private lateinit var adapter: MembresiaAdapter
-
     private lateinit var tvTipoPlan: TextView
     private lateinit var tvEstadoPlan: TextView
     private lateinit var tvFechasPlan: TextView
@@ -20,8 +30,13 @@ class MiMembresiaActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        // SOLUCIÓN: Cargar el diseño ANTES de buscar la barra
         setContentView(R.layout.activity_mi_membresia)
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbarMembresia)
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
 
         tvTipoPlan = findViewById(R.id.tvTipoPlan)
         tvEstadoPlan = findViewById(R.id.tvEstadoPlan)
@@ -29,29 +44,83 @@ class MiMembresiaActivity : AppCompatActivity() {
         tvPrecioPlan = findViewById(R.id.tvPrecioPlan)
 
         rvHistorialMembresias = findViewById(R.id.rvHistorialMembresias)
-
         rvHistorialMembresias.layoutManager = LinearLayoutManager(this)
 
         adapter = MembresiaAdapter(this, emptyList())
         rvHistorialMembresias.adapter = adapter
 
+        val usuarioRepository = UsuarioRepository(this)
+        val sesion = usuarioRepository.obtenerSesionActiva()
+        val idUsuarioLogueado = sesion?.idUsuario ?: -1
 
-        cargarDatosMembresia()
+        if (idUsuarioLogueado != -1) {
+            cargarDatosMembresiaDesdeServidor(idUsuarioLogueado)
+        } else {
+            Toast.makeText(this, "Error: Sesión no válida", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    private fun cargarDatosMembresia() {
-        tvTipoPlan.text = "Plan VIP"
-        tvEstadoPlan.text = "Estado: ACTIVO"
-        tvFechasPlan.text = "Inicio: 01/06/2026 - Fin: 01/07/2026"
-        tvPrecioPlan.text = "Precio: S/ 150.00"
+    private fun cargarDatosMembresiaDesdeServidor(idUsuario: Int) {
+        val api = RetrofitClient.instance.create(MembresiaApi::class.java)
 
-        val lista = listOf(
-            Membresia(1, "Plan Básico", "01/01/2026", "01/02/2026", "Vencido", 80.00),
-            Membresia(2, "Plan Premium", "01/02/2026", "01/03/2026", "Vencido", 120.00),
-            Membresia(3, "Plan VIP", "01/03/2026", "01/04/2026", "Vencido", 150.00)
-        )
-        adapter.actualizarDatos(lista)
+        api.obtenerMembresiasDeUsuario(idUsuario).enqueue(object : Callback<List<Membresia>> {
+            override fun onResponse(call: Call<List<Membresia>>, response: Response<List<Membresia>>) {
+                if (response.isSuccessful) {
+                    val membresias = response.body() ?: emptyList()
 
+                    val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val hoyString = formatoFecha.format(Date())
+                    val fechaHoySinHora = formatoFecha.parse(hoyString)
+
+                    val membresiasInteligentes = membresias.map { membresia ->
+                        try {
+                            val fechaFinObj = formatoFecha.parse(membresia.fechaFin)
+                            if (fechaFinObj != null && fechaHoySinHora != null && fechaFinObj.before(fechaHoySinHora)) {
+                                membresia.copy(estado = "VENCIDO")
+                            } else {
+                                membresia
+                            }
+                        } catch (e: Exception) {
+                            membresia
+                        }
+                    }
+
+                    val membresiaActiva = membresiasInteligentes.find {
+                        it.estado.trim().lowercase().startsWith("activ")
+                    }
+
+                    if (membresiaActiva != null) {
+                        tvTipoPlan.text = membresiaActiva.tipoMembresia
+                        tvEstadoPlan.text = "Estado: ${membresiaActiva.estado.trim().uppercase()}"
+                        tvFechasPlan.text = "Inicio: ${membresiaActiva.fechaInicio} - Fin: ${membresiaActiva.fechaFin}"
+                        tvPrecioPlan.text = "Precio: S/ ${String.format("%.2f", membresiaActiva.precio)}"
+                        tvEstadoPlan.setTextColor(getColor(android.R.color.holo_green_dark))
+                    } else {
+                        tvTipoPlan.text = "Sin Plan Activo"
+                        tvEstadoPlan.text = "Estado: INACTIVO"
+                        tvFechasPlan.text = "No tienes una membresía vigente"
+                        tvPrecioPlan.text = "Precio: S/ 0.00"
+                        tvEstadoPlan.setTextColor(getColor(android.R.color.darker_gray))
+                    }
+
+                    val historialVencidos = membresiasInteligentes.filter {
+                        !it.estado.trim().lowercase().startsWith("activ")
+                    }
+                    adapter.actualizarDatos(historialVencidos)
+
+                    if (membresiasInteligentes.isEmpty()) {
+                        Toast.makeText(this@MiMembresiaActivity, "No tienes historial de membresías", Toast.LENGTH_SHORT).show()
+                    }
+
+                } else {
+                    Toast.makeText(this@MiMembresiaActivity, "Error al cargar membresías", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Membresia>>, t: Throwable) {
+                Log.e("MiMembresiaActivity", "Error de red: ${t.message}")
+                Toast.makeText(this@MiMembresiaActivity, "Error de conexión al servidor", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
-
 }
