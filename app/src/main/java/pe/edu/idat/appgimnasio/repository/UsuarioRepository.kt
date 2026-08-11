@@ -2,11 +2,34 @@ package pe.edu.idat.appgimnasio.repository
 
 import android.content.ContentValues
 import android.content.Context
+import pe.edu.idat.appgimnasio.api.RetrofitClient
+import pe.edu.idat.appgimnasio.api.UsuarioApi
 import pe.edu.idat.appgimnasio.data.AppDatabaseHelper
 import pe.edu.idat.appgimnasio.entity.dto.LoginResponseDTO
+import pe.edu.idat.appgimnasio.entity.dto.PerfilResponseDTO
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class UsuarioRepository(context: Context) {
     private val dbHelper = AppDatabaseHelper(context)
+    private val usuarioApi = RetrofitClient.instance.create(UsuarioApi::class.java)
+
+    fun obtenerPerfilApi(idUsuario: Int, callback: (PerfilResponseDTO?) -> Unit) {
+        usuarioApi.obtenerPerfil(idUsuario).enqueue(object : Callback<PerfilResponseDTO> {
+            override fun onResponse(call: Call<PerfilResponseDTO>, response: Response<PerfilResponseDTO>) {
+                if (response.isSuccessful) {
+                    callback(response.body())
+                } else {
+                    callback(null)
+                }
+            }
+
+            override fun onFailure(call: Call<PerfilResponseDTO>, t: Throwable) {
+                callback(null)
+            }
+        })
+    }
 
     fun guardarSesionLocal(usuario: LoginResponseDTO) {
         val db = dbHelper.writableDatabase

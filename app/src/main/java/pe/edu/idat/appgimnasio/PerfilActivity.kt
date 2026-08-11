@@ -51,16 +51,27 @@ class PerfilActivity : AppCompatActivity() {
     private fun loadUserProfile() {
         val sesion = usuarioRepository.obtenerSesionActiva()
         if (sesion != null) {
-            val nombreCompleto = "${sesion.nombres} ${sesion.apellidos}"
-            tvPerfilNombreCompleto.text = nombreCompleto
-            val rolInfo = "Miembro King Sport (${sesion.rol.uppercase()})"
-            tvPerfilRol.text = rolInfo
-            tvPerfilEmail.text = sesion.correo
-            tvPerfilTelefono.text = if (sesion.telefono.isBlank()) "No registrado" else sesion.telefono
+            mostrarDatosPerfil(sesion.nombres, sesion.apellidos, sesion.correo, sesion.telefono, sesion.rol)
+
+
+            usuarioRepository.obtenerPerfilApi(sesion.idUsuario) { perfil ->
+                if (perfil != null) {
+                    mostrarDatosPerfil(perfil.nombres, perfil.apellidos, perfil.correo, perfil.telefono, sesion.rol)
+                }
+            }
         } else {
             Toast.makeText(this, "No se pudo cargar la información del perfil", Toast.LENGTH_SHORT).show()
             finish()
         }
+    }
+
+    private fun mostrarDatosPerfil(nombres: String, apellidos: String, correo: String, telefono: String, rol: String) {
+        val nombreCompleto = "$nombres $apellidos"
+        tvPerfilNombreCompleto.text = nombreCompleto
+        val rolInfo = "Miembro King Sport (${rol.uppercase()})"
+        tvPerfilRol.text = rolInfo
+        tvPerfilEmail.text = correo
+        tvPerfilTelefono.text = if (telefono.isBlank()) "No registrado" else telefono
     }
 
     private fun cerrarSesion() {
