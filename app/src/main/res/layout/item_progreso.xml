@@ -48,14 +48,33 @@
                 android:layout_marginTop="2dp"/>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvPesoProgreso"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            tools:text="75.5 Kg"/>
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvPesoProgreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                tools:text="75.5 Kg"/>
+
+            <ImageView
+                android:id="@+id/ivTendenciaPeso"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/ic_avanzar"
+                android:visibility="gone"
+                android:contentDescription="Tendencia de peso"
+                tools:visibility="visible"
+                tools:tint="@color/red"
+                tools:rotation="270"/>
+        </LinearLayout>
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

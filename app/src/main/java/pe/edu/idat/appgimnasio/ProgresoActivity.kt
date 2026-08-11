@@ -29,6 +29,7 @@ class ProgresoActivity : AppCompatActivity() {
     private lateinit var etNuevoPeso: TextInputEditText
     private lateinit var etBuscarProgreso: TextInputEditText
     private lateinit var btnRegistrarMedida: MaterialButton
+    private lateinit var btnHoy: MaterialButton
     private lateinit var rvHistorialPeso: RecyclerView
     private lateinit var ivBackProgreso: ImageView
 
@@ -72,6 +73,19 @@ class ProgresoActivity : AppCompatActivity() {
             etBuscarProgreso.text?.clear()
             filtrarProgreso("")
         }
+
+        btnHoy.setOnClickListener {
+            val calendar = java.util.Calendar.getInstance()
+            val year = calendar.get(java.util.Calendar.YEAR)
+            val month = calendar.get(java.util.Calendar.MONTH) + 1
+            val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
+
+            val fechaMostrada = String.format(Locale.getDefault(), "%02d/%02d/%04d", day, month, year)
+            val fechaFiltro = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month, day)
+
+            etBuscarProgreso.setText(fechaMostrada)
+            filtrarProgreso(fechaFiltro)
+        }
     }
 
     private fun mostrarDatePicker() {
@@ -99,6 +113,7 @@ class ProgresoActivity : AppCompatActivity() {
         etNuevoPeso = findViewById(R.id.etNuevoPeso)
         etBuscarProgreso = findViewById(R.id.etBuscarProgreso)
         btnRegistrarMedida = findViewById(R.id.btnRegistrarMedida)
+        btnHoy = findViewById(R.id.btnHoy)
         rvHistorialPeso = findViewById(R.id.rvHistorialPeso)
         ivBackProgreso = findViewById(R.id.ivBackProgreso)
 
@@ -132,7 +147,9 @@ class ProgresoActivity : AppCompatActivity() {
         progresoRepository.listarProgresosPorUsuario(idUsuario).enqueue(object : Callback<List<Progreso>> {
             override fun onResponse(call: Call<List<Progreso>>, response: Response<List<Progreso>>) {
                 if (response.isSuccessful) {
-                    listaCompleta = response.body() ?: listOf()
+                    val lista = response.body() ?: listOf()
+                    // Ordenar por ID de mayor a menor para que el más reciente salga primero
+                    listaCompleta = lista.sortedByDescending { it.idProgreso }
                     adapter.actualizarLista(listaCompleta)
                 } else {
                     Toast.makeText(this@ProgresoActivity, "Error al cargar datos", Toast.LENGTH_SHORT).show()
