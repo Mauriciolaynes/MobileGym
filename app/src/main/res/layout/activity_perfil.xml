@@ -1,224 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F4F6F8">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="32dp"
-        android:paddingBottom="16dp"
-        android:paddingHorizontal="16dp"
-        android:background="@color/white">
-
-        <ImageView
-            android:id="@+id/ivBackPerfil"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="8dp"
-            android:src="@drawable/ic_avanzar"
-            android:rotation="180"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:tint="@color/black"
-            android:contentDescription="Regresar" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Mi Perfil"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
-
-    <androidx.core.widget.NestedScrollView
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:scaleType="centerCrop"
+        android:src="@drawable/fondo_gym" />
 
-        <LinearLayout
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#C0000000" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:paddingTop="32dp"
+            android:paddingBottom="16dp"
+            android:paddingHorizontal="16dp"
+            android:background="@android:color/transparent">
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="4dp"
-                app:strokeWidth="0dp"
-                app:cardBackgroundColor="@color/white"
-                android:layout_marginBottom="24dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="32dp"
-                    android:gravity="center">
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        app:cardCornerRadius="50dp"
-                        app:cardElevation="0dp"
-                        app:strokeColor="@color/yellow_gym"
-                        app:strokeWidth="3dp">
-                        <ImageView
-                            android:id="@+id/ivPerfilFoto"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/ic_profile"
-                            android:padding="20dp"
-                            app:tint="@color/black"
-                            android:scaleType="centerInside" />
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <TextView
-                        android:id="@+id/tvPerfilNombreCompleto"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        tools:text="Giovanni Mendoza"
-                        android:textColor="@color/black"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvPerfilRol"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Miembro King Sport"
-                        android:textColor="#777777"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            <ImageView
+                android:id="@+id/ivBackPerfil"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_avanzar"
+                android:rotation="180"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/white"
+                android:contentDescription="Regresar" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Información Personal"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp" />
+                android:layout_centerInParent="true"
+                android:text="Mi Perfil"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
 
-            <com.google.android.material.card.MaterialCardView
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="2dp"
-                app:strokeWidth="0dp"
-                app:cardBackgroundColor="@color/white"
-                android:layout_marginBottom="32dp">
+                android:orientation="vertical"
+                android:padding="24dp">
 
-                <LinearLayout
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="8dp">
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="4dp"
+                    app:strokeWidth="0dp"
+                    app:cardBackgroundColor="#1A1A1A"
+                    android:layout_marginBottom="24dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp"
-                        android:gravity="center_vertical">
+                        android:orientation="vertical"
+                        android:padding="32dp"
+                        android:gravity="center">
 
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@android:drawable/ic_dialog_email"
-                            app:tint="@color/yellow_gym" />
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:cardCornerRadius="50dp"
+                            app:cardElevation="0dp"
+                            app:cardBackgroundColor="#333333"
+                            app:strokeColor="@color/yellow_gym"
+                            app:strokeWidth="3dp">
+                            <ImageView
+                                android:id="@+id/ivPerfilFoto"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_profile"
+                                android:padding="20dp"
+                                app:tint="@color/white"
+                                android:scaleType="centerInside" />
+                        </com.google.android.material.card.MaterialCardView>
 
-                        <LinearLayout
-                            android:layout_width="0dp"
+                        <TextView
+                            android:id="@+id/tvPerfilNombreCompleto"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="16dp"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Correo Electrónico"
-                                android:textColor="#999999"
-                                android:textSize="12sp" />
-                            <TextView
-                                android:id="@+id/tvPerfilEmail"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                tools:text="giovanni@gmail.com"
-                                android:textColor="@color/black"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </LinearLayout>
+                            android:layout_marginTop="16dp"
+                            tools:text="Giovanni Mendoza"
+                            android:textColor="@color/white"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="#F0F0F0"
-                        android:layout_marginHorizontal="16dp" />
+                        <TextView
+                            android:id="@+id/tvPerfilRol"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Miembro King Sport"
+                            android:textColor="#AAAAAA"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Información Personal"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp"
+                    app:strokeWidth="0dp"
+                    app:cardBackgroundColor="#1A1A1A"
+                    android:layout_marginBottom="32dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@android:drawable/ic_menu_call"
-                            app:tint="@color/yellow_gym" />
+                        android:orientation="vertical"
+                        android:padding="8dp">
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="16dp"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@android:drawable/ic_dialog_email"
+                                app:tint="@color/yellow_gym" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="Teléfono"
-                                android:textColor="#999999"
-                                android:textSize="12sp" />
-                            <TextView
-                                android:id="@+id/tvPerfilTelefono"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                tools:text="999 999 999"
-                                android:textColor="@color/black"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
+                                android:layout_weight="1"
+                                android:layout_marginStart="16dp"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Correo Electrónico"
+                                    android:textColor="#999999"
+                                    android:textSize="12sp" />
+                                <TextView
+                                    android:id="@+id/tvPerfilEmail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    tools:text="giovanni@gmail.com"
+                                    android:textColor="@color/white"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
                         </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#333333"
+                            android:layout_marginHorizontal="16dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@android:drawable/ic_menu_call"
+                                app:tint="@color/yellow_gym" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="16dp"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Teléfono"
+                                    android:textColor="#999999"
+                                    android:textSize="12sp" />
+                                <TextView
+                                    android:id="@+id/tvPerfilTelefono"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    tools:text="999 999 999"
+                                    android:textColor="@color/white"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+
                     </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCerrarSesionPerfil"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Cerrar Sesión"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#331111"
+                    android:textColor="#FF6B6B"
+                    app:rippleColor="@color/red" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCerrarSesionPerfil"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:text="Cerrar Sesión"
-                android:textAllCaps="false"
-                android:textStyle="bold"
-                app:cornerRadius="12dp"
-                android:backgroundTint="#FFEBEB"
-                android:textColor="@color/red"
-                app:rippleColor="@color/red" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
-</LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

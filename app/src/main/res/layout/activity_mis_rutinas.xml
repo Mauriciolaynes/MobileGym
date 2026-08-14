@@ -1,44 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F5F5F5">
+    android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarMisRutinas"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
-        app:title="Mis Rutinas"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        app:elevation="4dp" />
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/fondo_gym" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#C0000000" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvSubtituloMisRutinas"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarMisRutinas"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Selecciona tu entrenamiento de hoy:"
-            android:textSize="16sp"
-            android:textColor="#777777" />
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            app:titleTextColor="@color/white"
+            app:title="Mis Rutinas"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:elevation="0dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/lvMisRutinas"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="16dp"
-            android:clipToPadding="false"
-            android:paddingBottom="16dp"
-            tools:listitem="@layout/item_mis_rutinas" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvSubtituloMisRutinas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Selecciona tu entrenamiento de hoy:"
+                android:textSize="16sp"
+                android:textColor="#E0E0E0" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/lvMisRutinas"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="16dp"
+                android:clipToPadding="false"
+                android:paddingBottom="16dp"
+                tools:listitem="@layout/item_mis_rutinas" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

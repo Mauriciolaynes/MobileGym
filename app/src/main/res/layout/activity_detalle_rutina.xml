@@ -1,65 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F5F5F5">
+    android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarDetalle"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
-        app:title="Entrenamiento"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        app:elevation="4dp" />
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/fondo_gym" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#C0000000" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvNombreRutinaElegida"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarDetalle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Día 1 - Pecho y Tríceps"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="#333333"/>
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            app:titleTextColor="@color/white"
+            app:title="Entrenamiento"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:elevation="0dp" />
 
-        <TextView
-            android:id="@+id/tvInstruccionesDetalle"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Lista de ejercicios a realizar:"
-            android:textSize="16sp"
-            android:textColor="#777777"
-            android:layout_marginTop="8dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvEjerciciosRutina"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="8dp"
-            tools:listitem="@layout/item_ejercicio" />
+            <TextView
+                android:id="@+id/tvNombreRutinaElegida"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Día 1 - Pecho y Tríceps"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/yellow_gym"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnFinalizarEntrenamiento"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginVertical="8dp"
-            android:text="FINALIZAR ENTRENAMIENTO"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            app:backgroundTint="#FFC107"
-            app:cornerRadius="12dp"
-            app:elevation="4dp" />
+            <TextView
+                android:id="@+id/tvInstruccionesDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lista de ejercicios a realizar:"
+                android:textSize="16sp"
+                android:textColor="#E0E0E0"
+                android:layout_marginTop="8dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvEjerciciosRutina"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="8dp"
+                tools:listitem="@layout/item_ejercicio" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFinalizarEntrenamiento"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginVertical="8dp"
+                android:text="FINALIZAR ENTRENAMIENTO"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                app:backgroundTint="@color/yellow_gym"
+                app:cornerRadius="12dp"
+                app:elevation="4dp" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
