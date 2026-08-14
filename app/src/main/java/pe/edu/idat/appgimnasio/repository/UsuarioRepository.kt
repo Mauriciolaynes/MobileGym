@@ -45,6 +45,7 @@ class UsuarioRepository(context: Context) {
             put("rol", usuario.rol)
         }
         db.insert("usuario", null, values)
+        db.close()
     }
 
     fun obtenerSesionActiva(): LoginResponseDTO? {
@@ -69,5 +70,6 @@ class UsuarioRepository(context: Context) {
     fun cerrarSesion() {
         val db = dbHelper.writableDatabase
         db.delete("usuario", null, null)
+        db.close()
     }
 }

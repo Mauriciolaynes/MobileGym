@@ -9,9 +9,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pe.edu.idat.appgimnasio.adapter.MembresiaAdapter
-import pe.edu.idat.appgimnasio.api.MembresiaApi
-import pe.edu.idat.appgimnasio.api.RetrofitClient
 import pe.edu.idat.appgimnasio.entity.Membresia
+import pe.edu.idat.appgimnasio.repository.MembresiaRepository
 import pe.edu.idat.appgimnasio.repository.UsuarioRepository
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,6 +26,8 @@ class MiMembresiaActivity : AppCompatActivity() {
     private lateinit var tvEstadoPlan: TextView
     private lateinit var tvFechasPlan: TextView
     private lateinit var tvPrecioPlan: TextView
+
+    private val membresiaRepository = MembresiaRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,16 +54,14 @@ class MiMembresiaActivity : AppCompatActivity() {
         val idUsuarioLogueado = sesion?.idUsuario ?: -1
 
         if (idUsuarioLogueado != -1) {
-            cargarDatosMembresiaDesdeServidor(idUsuarioLogueado)
+            cargarDatosMembresia(idUsuarioLogueado)
         } else {
             Toast.makeText(this, "Error: Sesión no válida", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun cargarDatosMembresiaDesdeServidor(idUsuario: Int) {
-        val api = RetrofitClient.instance.create(MembresiaApi::class.java)
-
-        api.obtenerMembresiasDeUsuario(idUsuario).enqueue(object : Callback<List<Membresia>> {
+    private fun cargarDatosMembresia(idUsuario: Int) {
+        membresiaRepository.obtenerMembresias(idUsuario).enqueue(object : Callback<List<Membresia>> {
             override fun onResponse(call: Call<List<Membresia>>, response: Response<List<Membresia>>) {
                 if (response.isSuccessful) {
                     val membresias = response.body() ?: emptyList()
@@ -89,7 +88,9 @@ class MiMembresiaActivity : AppCompatActivity() {
                     }
 
                     if (membresiaActiva != null) {
-                        tvTipoPlan.text = membresiaActiva.tipoMembresia
+                        val nombrePlan = if (membresiaActiva.tipoMembresia.isNullOrBlank()) "PLAN ACTIVO" else membresiaActiva.tipoMembresia.uppercase()
+
+                        tvTipoPlan.text = nombrePlan
                         tvEstadoPlan.text = "Estado: ${membresiaActiva.estado.trim().uppercase()}"
                         tvFechasPlan.text = "Inicio: ${membresiaActiva.fechaInicio} - Fin: ${membresiaActiva.fechaFin}"
                         tvPrecioPlan.text = "Precio: S/ ${String.format("%.2f", membresiaActiva.precio)}"

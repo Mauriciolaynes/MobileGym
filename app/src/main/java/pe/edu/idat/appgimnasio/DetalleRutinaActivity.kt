@@ -10,9 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import pe.edu.idat.appgimnasio.adapter.EjercicioAdapter
-import pe.edu.idat.appgimnasio.api.RetrofitClient
-import pe.edu.idat.appgimnasio.api.RutinaApi
 import pe.edu.idat.appgimnasio.entity.EjercicioRutina
+import pe.edu.idat.appgimnasio.repository.RutinaRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,10 +21,10 @@ class DetalleRutinaActivity : AppCompatActivity() {
     private lateinit var tvTituloDetalle: TextView
     private lateinit var rvEjercicios: RecyclerView
     private lateinit var adapter: EjercicioAdapter
+    private val rutinaRepository = RutinaRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // ¡Eliminamos enableEdgeToEdge() para arreglar los márgenes!
         setContentView(R.layout.activity_detalle_rutina)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbarDetalle)
@@ -59,9 +58,7 @@ class DetalleRutinaActivity : AppCompatActivity() {
     }
 
     private fun cargarEjerciciosDesdeServidor(idRutina: Int) {
-        val api = RetrofitClient.instance.create(RutinaApi::class.java)
-
-        api.obtenerEjerciciosDeRutina(idRutina).enqueue(object : Callback<List<EjercicioRutina>> {
+        rutinaRepository.obtenerEjerciciosDeRutina(idRutina).enqueue(object : Callback<List<EjercicioRutina>> {
             override fun onResponse(call: Call<List<EjercicioRutina>>, response: Response<List<EjercicioRutina>>) {
                 if (response.isSuccessful) {
                     val ejercicios = response.body() ?: emptyList()

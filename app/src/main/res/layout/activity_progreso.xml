@@ -138,12 +138,12 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnHoy"
+                    android:id="@+id/btnLimpiarFiltro"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hoy"
-                    android:layout_marginStart="8dp"
+                    android:text="Limpiar"
+                    android:layout_marginStart="4dp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     app:rippleColor="#20000000"/>

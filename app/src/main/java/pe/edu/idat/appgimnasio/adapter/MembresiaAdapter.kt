@@ -12,8 +12,6 @@ import pe.edu.idat.appgimnasio.R
 
 class MembresiaAdapter (private val context : Context, private var lista: List<Membresia>)
     : RecyclerView.Adapter<MembresiaAdapter.MembresiaViewHolder>(){
-
-
     override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): MembresiaViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_membresia,parent,false)
         return MembresiaViewHolder(view)
@@ -38,7 +36,6 @@ class MembresiaAdapter (private val context : Context, private var lista: List<M
     override fun getItemCount(): Int {
         return lista.size
     }
-
 
     inner class MembresiaViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
         val tvItemTipoPlan: TextView = itemview.findViewById<TextView>(R.id.tvItemTipoPlan)

@@ -18,7 +18,6 @@ class EjercicioAdapter(private val context: Context, private var lista: List<Eje
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_ejercicio, parent, false)
         return EjercicioViewHolder(view)
     }
-
     override fun onBindViewHolder(holder: EjercicioViewHolder, position: Int) {
         val ejercicio = lista[position]
 

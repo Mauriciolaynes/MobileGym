@@ -29,7 +29,7 @@ class ProgresoActivity : AppCompatActivity() {
     private lateinit var etNuevoPeso: TextInputEditText
     private lateinit var etBuscarProgreso: TextInputEditText
     private lateinit var btnRegistrarMedida: MaterialButton
-    private lateinit var btnHoy: MaterialButton
+    private lateinit var btnLimpiarFiltro: MaterialButton
     private lateinit var rvHistorialPeso: RecyclerView
     private lateinit var ivBackProgreso: ImageView
 
@@ -45,7 +45,7 @@ class ProgresoActivity : AppCompatActivity() {
 
         progresoRepository = ProgresoRepository()
         usuarioRepository = UsuarioRepository(this)
-        
+
         val sesion = usuarioRepository.obtenerSesionActiva()
         if (sesion != null) {
             idUsuario = sesion.idUsuario
@@ -74,17 +74,9 @@ class ProgresoActivity : AppCompatActivity() {
             filtrarProgreso("")
         }
 
-        btnHoy.setOnClickListener {
-            val calendar = java.util.Calendar.getInstance()
-            val year = calendar.get(java.util.Calendar.YEAR)
-            val month = calendar.get(java.util.Calendar.MONTH) + 1
-            val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
-
-            val fechaMostrada = String.format(Locale.getDefault(), "%02d/%02d/%04d", day, month, year)
-            val fechaFiltro = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month, day)
-
-            etBuscarProgreso.setText(fechaMostrada)
-            filtrarProgreso(fechaFiltro)
+        btnLimpiarFiltro.setOnClickListener {
+            etBuscarProgreso.text?.clear()
+            filtrarProgreso("")
         }
     }
 
@@ -99,13 +91,13 @@ class ProgresoActivity : AppCompatActivity() {
             { _, selectedYear, selectedMonth, selectedDay ->
                 val fechaMostrada = String.format(Locale.getDefault(), "%02d/%02d/%04d", selectedDay, selectedMonth + 1, selectedYear)
                 etBuscarProgreso.setText(fechaMostrada)
-                
+
                 val fechaFiltro = String.format(Locale.getDefault(), "%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
                 filtrarProgreso(fechaFiltro)
             },
             year, month, day
         )
-        
+
         datePickerDialog.show()
     }
 
@@ -113,7 +105,7 @@ class ProgresoActivity : AppCompatActivity() {
         etNuevoPeso = findViewById(R.id.etNuevoPeso)
         etBuscarProgreso = findViewById(R.id.etBuscarProgreso)
         btnRegistrarMedida = findViewById(R.id.btnRegistrarMedida)
-        btnHoy = findViewById(R.id.btnHoy)
+        btnLimpiarFiltro = findViewById(R.id.btnLimpiarFiltro)
         rvHistorialPeso = findViewById(R.id.rvHistorialPeso)
         ivBackProgreso = findViewById(R.id.ivBackProgreso)
 
@@ -148,7 +140,6 @@ class ProgresoActivity : AppCompatActivity() {
             override fun onResponse(call: Call<List<Progreso>>, response: Response<List<Progreso>>) {
                 if (response.isSuccessful) {
                     val lista = response.body() ?: listOf()
-                    // Ordenar por ID de mayor a menor para que el más reciente salga primero
                     listaCompleta = lista.sortedByDescending { it.idProgreso }
                     adapter.actualizarLista(listaCompleta)
                 } else {
@@ -168,7 +159,7 @@ class ProgresoActivity : AppCompatActivity() {
         if (pesoStr.isNotEmpty()) {
             val peso = pesoStr.toDouble()
             val fecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-            
+
             progresoRepository.registrarProgreso(idUsuario, fecha, peso).enqueue(object : Callback<Progreso> {
                 override fun onResponse(call: Call<Progreso>, response: Response<Progreso>) {
                     if (response.isSuccessful) {
@@ -225,7 +216,7 @@ class ProgresoActivity : AppCompatActivity() {
     }
 
     private fun editarProgreso(progreso: Progreso) {
-        val inputPeso = EditText(this).apply { 
+        val inputPeso = EditText(this).apply {
             hint = "Ingrese nuevo peso"
             setText(progreso.peso.toString())
             inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL

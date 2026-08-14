@@ -8,11 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pe.edu.idat.appgimnasio.adapter.RutinaAdapter
-import pe.edu.idat.appgimnasio.api.MembresiaApi
-import pe.edu.idat.appgimnasio.api.RetrofitClient
-import pe.edu.idat.appgimnasio.api.RutinaApi
 import pe.edu.idat.appgimnasio.entity.Membresia
 import pe.edu.idat.appgimnasio.entity.Rutina
+import pe.edu.idat.appgimnasio.repository.MembresiaRepository
+import pe.edu.idat.appgimnasio.repository.RutinaRepository
 import pe.edu.idat.appgimnasio.repository.UsuarioRepository
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,6 +24,8 @@ class MisRutinasActivity : AppCompatActivity() {
 
     private lateinit var rvMisRutinas: RecyclerView
     private lateinit var adapter: RutinaAdapter
+    private val membresiaRepository = MembresiaRepository()
+    private val rutinaRepository = RutinaRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,9 +60,7 @@ class MisRutinasActivity : AppCompatActivity() {
     }
 
     private fun verificarAccesoPorMembresia(idUsuario: Int) {
-        val apiMembresia = RetrofitClient.instance.create(MembresiaApi::class.java)
-
-        apiMembresia.obtenerMembresiasDeUsuario(idUsuario).enqueue(object : Callback<List<Membresia>> {
+        membresiaRepository.obtenerMembresias(idUsuario).enqueue(object : Callback<List<Membresia>> {
             override fun onResponse(call: Call<List<Membresia>>, response: Response<List<Membresia>>) {
                 if (response.isSuccessful) {
                     val membresias = response.body() ?: emptyList()
@@ -110,9 +109,7 @@ class MisRutinasActivity : AppCompatActivity() {
     }
 
     private fun cargarMisRutinasDesdeServidor(idUsuario: Int) {
-        val apiRutina = RetrofitClient.instance.create(RutinaApi::class.java)
-
-        apiRutina.obtenerRutinasDeUsuario(idUsuario).enqueue(object : Callback<List<Rutina>> {
+        rutinaRepository.obtenerRutinasDeUsuario(idUsuario).enqueue(object : Callback<List<Rutina>> {
             override fun onResponse(call: Call<List<Rutina>>, response: Response<List<Rutina>>) {
                 if (response.isSuccessful) {
                     val rutinas = response.body() ?: emptyList()

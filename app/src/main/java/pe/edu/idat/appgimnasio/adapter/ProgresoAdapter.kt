@@ -19,6 +19,7 @@ class ProgresoAdapter(
         val tvFecha: TextView = itemView.findViewById(R.id.tvFechaProgreso)
         val tvPeso: TextView = itemView.findViewById(R.id.tvPesoProgreso)
         val ivTendencia: ImageView = itemView.findViewById(R.id.ivTendenciaPeso)
+        val tvDiferencia: TextView = itemView.findViewById(R.id.tvDiferenciaPeso)
 
         init {
             itemView.setOnClickListener {
@@ -38,29 +39,46 @@ class ProgresoAdapter(
         holder.tvFecha.text = progreso.fechaRegistro
         holder.tvPeso.text = "${progreso.peso} Kg"
 
-        // Lógica de tendencia (comparando con el registro anterior/más antiguo en la lista)
-        // Asumiendo que la lista está ordenada de más reciente a más antiguo
         if (position < listaProgreso.size - 1) {
             val progresoAnterior = listaProgreso[position + 1]
-            holder.ivTendencia.visibility = View.VISIBLE
-            
+
+            val diferencia = Math.abs(progreso.peso - progresoAnterior.peso)
+            val difFormateada = String.format(java.util.Locale.getDefault(), "%.1f", diferencia)
+
+            holder.tvDiferencia.visibility = View.VISIBLE
+
             if (progreso.peso > progresoAnterior.peso) {
-                // Subió de peso: Flecha Roja Arriba (Alerta)
+                holder.ivTendencia.visibility = View.VISIBLE
                 holder.ivTendencia.setImageResource(R.drawable.ic_avanzar)
                 holder.ivTendencia.rotation = 270f
-                holder.ivTendencia.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.red))
+
+                val colorRojo = ContextCompat.getColor(holder.itemView.context, R.color.red)
+                holder.ivTendencia.setColorFilter(colorRojo)
+
+                holder.tvDiferencia.text = "Subiste $difFormateada Kg"
+                holder.tvDiferencia.setTextColor(colorRojo)
+
             } else if (progreso.peso < progresoAnterior.peso) {
-                // Bajó de peso: Flecha Verde Abajo (Mejora)
+                holder.ivTendencia.visibility = View.VISIBLE
                 holder.ivTendencia.setImageResource(R.drawable.ic_avanzar)
                 holder.ivTendencia.rotation = 90f
-                holder.ivTendencia.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.green))
+
+                val colorVerde = ContextCompat.getColor(holder.itemView.context, R.color.green)
+                holder.ivTendencia.setColorFilter(colorVerde)
+
+                holder.tvDiferencia.text = "Bajaste $difFormateada Kg"
+                holder.tvDiferencia.setTextColor(colorVerde)
+
             } else {
-                // Mismo peso: No mostrar flecha
                 holder.ivTendencia.visibility = View.GONE
+                holder.tvDiferencia.text = "Te mantuviste"
+                holder.tvDiferencia.setTextColor(ContextCompat.getColor(holder.itemView.context, android.R.color.darker_gray))
             }
         } else {
-            // Es el registro más antiguo, no hay con qué comparar
             holder.ivTendencia.visibility = View.GONE
+            holder.tvDiferencia.visibility = View.VISIBLE
+            holder.tvDiferencia.text = "Peso inicial"
+            holder.tvDiferencia.setTextColor(ContextCompat.getColor(holder.itemView.context, android.R.color.darker_gray))
         }
     }
 

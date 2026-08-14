@@ -30,7 +30,6 @@ class PerfilActivity : AppCompatActivity() {
         initViews()
         loadUserProfile()
     }
-
     private fun initViews() {
         ivBackPerfil = findViewById(R.id.ivBackPerfil)
         tvPerfilNombreCompleto = findViewById(R.id.tvPerfilNombreCompleto)

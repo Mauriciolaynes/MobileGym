@@ -4,16 +4,8 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class AppDatabaseHelper(context: Context) : SQLiteOpenHelper(context, "gym.db", null, 3) {
+class AppDatabaseHelper(context: Context) : SQLiteOpenHelper(context, "gym.db", null, 4) {
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL("""
-            CREATE TABLE progreso (
-                idProgreso INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                fechaRegistro TEXT,
-                peso REAL
-            )
-        """.trimIndent())
-
         db.execSQL("""
             CREATE TABLE usuario (
                 idUsuario INTEGER PRIMARY KEY NOT NULL,
@@ -27,7 +19,6 @@ class AppDatabaseHelper(context: Context) : SQLiteOpenHelper(context, "gym.db", 
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS progreso")
         db.execSQL("DROP TABLE IF EXISTS usuario")
         onCreate(db)
     }
